@@ -8,7 +8,7 @@ using Google.Api.Gax.ResourceNames;
 using Google.Cloud.SecretManager.V1;
 using Google.Protobuf;
 
-namespace PallyCon
+namespace Doverunner
 {
     class SecretManagerClient
     {

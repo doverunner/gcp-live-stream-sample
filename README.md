@@ -1,6 +1,7 @@
 ---------------------------------------
-# Google Cloud Live Stream API & DoveRunner DRM Integration Sample
-This sample shows how to integrate DoveRunner Multi DRM with Google Cloud Live Stream API v1 using [API Client Libraries](https://cloud.google.com/livestream/docs/reference/libraries). Since this sample focused on DRM integration, only a simple scenario of applying Widevine, PlayReady, and FairPlay DRM to a live stream in fmp4 format is used, see the [references link](https://cloud.google.com/dotnet/docs/reference/Google.Cloud.Video.LiveStream.V1/latest) for more information about Live Stream API v1 features.
+
+# Google Cloud Live Stream API & Doverunner DRM Integration Sample
+This sample shows how to integrate Doverunner Multi DRM with Google Cloud Live Stream API v1 using [API Client Libraries](https://cloud.google.com/livestream/docs/reference/libraries). Since this sample focused on DRM integration, only a simple scenario of applying Widevine, PlayReady, and FairPlay DRM to a live stream in fmp4 format is used, see the [references link](https://cloud.google.com/dotnet/docs/reference/Google.Cloud.Video.LiveStream.V1/latest) for more information about Live Stream API v1 features.
 
 
 
@@ -27,7 +28,8 @@ This sample shows how to integrate DoveRunner Multi DRM with Google Cloud Live S
 
     - https://cloud.google.com/livestream/docs/access-control#access_to_gcs
 
-- KMS token used for CPIX API communication with DoveRunner KMS. This is an API authentication token that is generated when you sign up DoveRunner service, and can be found on the DoveRunner Console site.
+
+- {enc-token} used for CPIX API communication with Doverunner KMS. This is an API authentication token that is generated when you sign up Doverunner service, and can be found on the Doverunner Console site.
 - Encoder to generate the input stream that the API processes.
 
   - In this sample, [ffmpeg](https://ffmpeg.org/download.html) is used.
@@ -36,8 +38,8 @@ This sample shows how to integrate DoveRunner Multi DRM with Google Cloud Live S
 ---------------------------------------
 ## How to launch the project and test
 1. Clone or download this sample repository.
-2. Open the root /PallyConGoogleLiveStreamSample.sln and select the active project to launch in Visual Studio.
-3. Make sure you have your Google Cloud project, bucket information and DoveRunner KMS related information.
+2. Open the root /DoverunnerGoogleLiveStreamSample.sln and select the active project to launch in Visual Studio.
+3. Make sure you have your Google Cloud project, bucket information and Doverunner KMS related information.
 4. Set the values of the variables at the top of the main method.
 5. Run the project.
 6. Copy the  `<RTMP input endpoint uri>` that is printed to the console.
@@ -51,32 +53,40 @@ This sample shows how to integrate DoveRunner Multi DRM with Google Cloud Live S
 
    
 ---------------------------------------
-## PallyConKMSClientWrapper
-C++/CLI project for wrap a C++ library(*PallyConKmsClient_MD.lib*) to communicate with DoveRunner KMS server.
-The _getPackagingInfoFromKmsServer_ function allows you to obtain packaging information from the KMS server.
+## DoverunnerCpixClientWrapper
+C++/CLI project for wrap a C++ library(*DoverunnerCpixClient.lib*) to communicate with Doverunner KMS server.
+The _GetContentKeyInfoFromDoverunnerKMS_ function allows you to obtain packaging information from the KMS server.
 
 
 
 ```c#
-bool PallyConKmsClientWrapper::getPackagingInfoFromKmsServer(String^ content_id, String^% key_id, String^% key, String^% iv, String^% hls_key_uri, String^% widevine_pssh, String^% playready_pssh)
+ContentPackagingInfo Doverunner::CpixClientWrapper::GetContentKeyInfoFromDoverunnerKMS(String^ cid, DrmType drmType, EncryptionScheme encryptionScheme, TrackType trackType, long periodIndex)
 {
-	try
-	{
-		ContentPackagingInfo packInfos = _kmsClient->getContentPackagingInfoFromKmsServer(
-			msclr::interop::marshal_as<std::string>(content_id), "", PackType::DASH | PackType::HLS);
-		key_id = gcnew String(packInfos.keyId.c_str());
-		key = gcnew String(packInfos.key.c_str());
-		iv = gcnew String(packInfos.iv.c_str());
-		hls_key_uri = gcnew String(packInfos.hlsKeyUri.c_str());
-		widevine_pssh = gcnew String(packInfos.pssh_widevine.c_str());
-		playready_pssh = gcnew String(packInfos.pssh_playready.c_str());
-	}
-	catch (std::exception& e)
-	{
-		std::cout << e.what();
-	}
+    ContentPackagingInfo packInfos;
+    try {
+        doverunner::ContentPackagingInfo contentPackInfo = _cpixClient->GetContentKeyInfoFromDoverunnerKMS(msclr::interop::marshal_as<std::string>(cid), static_cast<doverunner::DrmType>(drmType), static_cast<doverunner::EncryptionScheme>(encryptionScheme), static_cast<doverunner::TrackType>(trackType), periodIndex);
+        
+        packInfos.ContentId = gcnew String(contentPackInfo.contentId.c_str());
+        packInfos.DrmInfos = gcnew List<MultiDrmInfo>;
 
-	return true;
+        for (auto multiDrmInfo : contentPackInfo.multiDrmInfos)
+        {
+            ...
+            packInfos.DrmInfos->Add(drmInfo);
+        }
+    }
+    catch (doverunner::CpixClientException& e)
+    {
+        std::string errMsg = "An error has occurred in the CPIX Client module : \n";
+        errMsg.append(e.what());
+        throw gcnew Exception(gcnew String(errMsg.c_str()));
+    }
+    catch (std::exception& e)
+    {
+        throw gcnew Exception(gcnew String(e.what()));
+    }
+
+    return packInfos;
 }
 ```
 
