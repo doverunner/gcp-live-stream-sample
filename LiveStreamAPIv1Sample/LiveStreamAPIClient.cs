@@ -10,7 +10,7 @@ using Google.LongRunning;
 using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 
-namespace Doverunner
+namespace DoveRunner
 {
     class LiveStreamAPIClient
     {

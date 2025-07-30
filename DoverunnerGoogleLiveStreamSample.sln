@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiveStreamAPIv1Sample", "LiveStreamAPIv1Sample\LiveStreamAPIv1Sample.csproj", "{A43283CC-C729-4C81-9C80-E6C741A81121}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DoverunnerCpixClientWrapper", "DoverunnerCpixClientWrapper\DoverunnerCpixClientWrapper.vcxproj", "{3A3E00DB-8D96-4C7F-81D1-D4C278399927}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DoveRunnerCpixClientWrapper", "DoveRunnerCpixClientWrapper\DoveRunnerCpixClientWrapper.vcxproj", "{3A3E00DB-8D96-4C7F-81D1-D4C278399927}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

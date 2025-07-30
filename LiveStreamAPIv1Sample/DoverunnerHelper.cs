@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace Doverunner
+namespace DoveRunner
 {
-    class DoverunnerHelper
+    class DoveRunnerHelper
     {
         public class SecretPayload
         {
@@ -28,12 +28,12 @@ namespace Doverunner
                 return "-1";
             }
         }
-        public static string GetSecretKeyDataFromDoverunnerKMS(string kms_url, string content_id,
+        public static string GetSecretKeyDataFromDoveRunnerKMS(string kms_url, string content_id,
             RepeatedField<string> widevineMuxStreams, RepeatedField<string> playreadyMuxStreams, RepeatedField<string> fairplayMuxStreams)
         {
             // Get the packaging information from the KMS Server
             CpixClientWrapper doverunnerCpixClientWrapper = new CpixClientWrapper(kms_url);
-            ContentPackagingInfo contentPackagingInfo = doverunnerCpixClientWrapper.GetContentKeyInfoFromDoverunnerKMS(content_id, DrmType.WIDEVINE | DrmType.PLAYREADY | DrmType.FAIRPLAY, EncryptionScheme.CENC, TrackType.ALL_TRACKS, 0);
+            ContentPackagingInfo contentPackagingInfo = doverunnerCpixClientWrapper.GetContentKeyInfoFromDoveRunnerKMS(content_id, DrmType.WIDEVINE | DrmType.PLAYREADY | DrmType.FAIRPLAY, EncryptionScheme.CENC, TrackType.ALL_TRACKS, 0);
 
             // Set the string data to meet Google Cloud Secret Key format
             var widevineDict = new Dictionary<string, object>();

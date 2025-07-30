@@ -5,7 +5,7 @@
 using namespace System;
 using namespace System::Collections::Generic;
 
-namespace Doverunner {
+namespace DoveRunner {
 	public enum class EncryptionScheme {
 		NONE,
 		CENC,
@@ -90,6 +90,6 @@ namespace Doverunner {
 		String^ GetLastRequestRowData();
 		String^ GetLastResponseRowData();
 
-		ContentPackagingInfo GetContentKeyInfoFromDoverunnerKMS(String^ cid, DrmType drmType, EncryptionScheme encryptionScheme, TrackType trackType, long periodIndex);
+		ContentPackagingInfo GetContentKeyInfoFromDoveRunnerKMS(String^ cid, DrmType drmType, EncryptionScheme encryptionScheme, TrackType trackType, long periodIndex);
 	};
 }

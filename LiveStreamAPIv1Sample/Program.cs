@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using Google.Cloud.SecretManager.V1;
 using Google.Cloud.Video.LiveStream.V1;
-using Doverunner;
+using DoveRunner;
 using Google.Protobuf.Collections;
 
-namespace Doverunner
+namespace DoveRunner
 {
     class Program
     {
@@ -36,7 +36,7 @@ namespace Doverunner
             try
             {
                 // Make a Secret Key payload by getting the packaging information from the KMS server
-                string secretPayload = DoverunnerHelper.GetSecretKeyDataFromDoverunnerKMS(doverunnerKmsUrl, contentId,
+                string secretPayload = DoveRunnerHelper.GetSecretKeyDataFromDoveRunnerKMS(doverunnerKmsUrl, contentId,
                     widevineMuxStreams, playreadyMuxStreams, fairplayMuxStreams);                
 
                 // First, create secret to set the encryption rules

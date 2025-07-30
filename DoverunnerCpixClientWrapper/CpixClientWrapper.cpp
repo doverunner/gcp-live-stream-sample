@@ -3,13 +3,13 @@
 
 #include "CpixClientWrapper.h"
 
-namespace Doverunner {
-	Doverunner::CpixClientWrapper::CpixClientWrapper(String^ kmsUrl)
+namespace DoveRunner {
+	DoveRunner::CpixClientWrapper::CpixClientWrapper(String^ kmsUrl)
 		: _cpixClient(new doverunner::CpixClient(msclr::interop::marshal_as<std::string>(kmsUrl)))
 	{
 	}
 
-	Doverunner::CpixClientWrapper::~CpixClientWrapper()
+	DoveRunner::CpixClientWrapper::~CpixClientWrapper()
 	{
 		delete _cpixClient;
 		_cpixClient = nullptr;
@@ -30,11 +30,11 @@ namespace Doverunner {
 		return gcnew String(_cpixClient->GetLastResponseRowData().c_str());
 	}
 
-	ContentPackagingInfo Doverunner::CpixClientWrapper::GetContentKeyInfoFromDoverunnerKMS(String^ cid, DrmType drmType, EncryptionScheme encryptionScheme, TrackType trackType, long periodIndex)
+	ContentPackagingInfo DoveRunner::CpixClientWrapper::GetContentKeyInfoFromDoveRunnerKMS(String^ cid, DrmType drmType, EncryptionScheme encryptionScheme, TrackType trackType, long periodIndex)
 	{
 		ContentPackagingInfo packInfos;
 		try {
-			doverunner::ContentPackagingInfo contentPackInfo = _cpixClient->GetContentKeyInfoFromDoverunnerKMS(msclr::interop::marshal_as<std::string>(cid)
+			doverunner::ContentPackagingInfo contentPackInfo = _cpixClient->GetContentKeyInfoFromDoveRunnerKMS(msclr::interop::marshal_as<std::string>(cid)
 				, static_cast<doverunner::DrmType>(drmType), static_cast<doverunner::EncryptionScheme>(encryptionScheme), static_cast<doverunner::TrackType>(trackType), periodIndex);
 
 			packInfos.ContentId = gcnew String(contentPackInfo.contentId.c_str());
