@@ -95,8 +95,8 @@ ContentPackagingInfo DoveRunner::CpixClientWrapper::GetContentKeyInfoFromDoveRun
 ---------------------------------------
 
 ## References
-- https://doverunner.com/docs/en/multidrm/
-- https://doverunner.com/docs/en/multidrm/packaging/cpix-api/
+- https://docs.doverunner.com/content-security/multi-drm/
+- https://docs.doverunner.com/content-security/multi-drm/packaging/cpix-api/
 - https://cloud.google.com/livestream/docs/reference/libraries
 - https://cloud.google.com/secret-manager/docs/reference/libraries#client-libraries-install-csharp
 - https://cloud.google.com/livestream/docs/reference/drm#string
