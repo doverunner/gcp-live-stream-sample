@@ -4,31 +4,30 @@ using System.IO;
 using System.Linq;
 using Google.Cloud.SecretManager.V1;
 using Google.Cloud.Video.LiveStream.V1;
-using PallyCon;
+using DoveRunner;
 using Google.Protobuf.Collections;
 
-namespace PallyCon
+namespace DoveRunner
 {
     class Program
     {
         static async Task Main(string[] args)
         {
-            string pallyconKmsUrl = "https://kms.pallycon.com/v2/cpix/pallycon/getKey/";
-            string pallyconEncToken = "<pallycon-enc-token>";
+            string doverunnerKmsUrl = "https://drm-kms.doverunner.com/v2/cpix/pallycon/getKey/{enc-token}"; // Enter your enc-token here
             string contentId = "<content-id>";
             string projectId = "<your-project-id>";
             string outputBucketUri = "<your-bucket-uri>";   // e.g.) gs://<bucket_name>/path/to/output
             // Region for Live Stream API input Endpoint.
             // For the best performance results, make sure you create your input endpoint and channel as close as possible
             // to the location where the live stream files are stored in Cloud Storage.
-            // See the following link for the location you can set up. https://cloud.google.com/livestream/docs/locations#regions
+            // See the following link for the regions you can set up. https://cloud.google.com/livestream/docs/locations#regions
             string locationId = "<your-location-id>";
 
             // Resource id for each.
             // Each ID cannot be duplicated, so if you create one, you must delete it to create another with the same ID.
-            string inputId = "pallycon-sample-input";
-            string channelId = "pallycon-sample-channel";
-            string secretId = "pallycon-sample-secret";
+            string inputId = "doverunner-sample-input";
+            string channelId = "doverunner-sample-channel";
+            string secretId = "doverunner-sample-secret";
 
             var widevineMuxStreams = new RepeatedField<string> { "fmp4_widevine_video", "fmp4_widevine_audio" };
             var playreadyMuxStreams = new RepeatedField<string> { "fmp4_playready_video", "fmp4_playready_audio" };
@@ -36,8 +35,8 @@ namespace PallyCon
 
             try
             {
-                // Make a Secret Key payload by getting the packaging information from the PallyCon KMS server
-                string secretPayload = PallyConHelper.GetSecretKeyDataFromPallyConKMS(pallyconKmsUrl, pallyconEncToken, contentId,
+                // Make a Secret Key payload by getting the packaging information from the KMS server
+                string secretPayload = DoveRunnerHelper.GetSecretKeyDataFromDoveRunnerKMS(doverunnerKmsUrl, contentId,
                     widevineMuxStreams, playreadyMuxStreams, fairplayMuxStreams);                
 
                 // First, create secret to set the encryption rules
